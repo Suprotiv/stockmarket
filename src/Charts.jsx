@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Line } from "react-chartjs-2";
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from "chart.js";
 
@@ -6,23 +6,66 @@ ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, T
 
 const numFormatter = new Intl.NumberFormat("en-US");
 
-const StockChart = ({ getData, name, range }) => {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [latestPrice, setLatestPrice] = useState(getData[0].price);
-  const [dataPoints, setDataPoints] = useState([getData[0].price]);
+// Color mapping for different companies
+const getCompanyColor = (companyName) => {
+  const colorMap = {
+    "Zomato": "#00ffcc",           // Cyan
+    "ITC": "#ff6b6b",               // Red
+    "Adani Ports": "#ff9ff3",       // Teal
+    "Maruti Suzuki": "#ffe66d",     // Yellow
+    "Bharti Airtel": "#ffa502",     // Light Green
+  };
+  
+  return colorMap[companyName] || "#00ffcc"; // Default to cyan if not found
+};
 
-  const initialPrice = getData[0]?.price || 0;
+// Helper function to convert hex to rgba
+const hexToRgba = (hex, alpha = 0.1) => {
+  const r = parseInt(hex.slice(1, 3), 16);
+  const g = parseInt(hex.slice(3, 5), 16);
+  const b = parseInt(hex.slice(5, 7), 16);
+  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+};
+
+const StockChart = ({ getData, name, range, sessionKey }) => {
+  const lineColor = getCompanyColor(name);
+  const backgroundColor = hexToRgba(lineColor, 0.1);
+  // Use function form to ensure we get the latest getData value
+  const getInitialPrice = () => getData[0]?.price || 0;
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [latestPrice, setLatestPrice] = useState(() => getInitialPrice());
+  const [dataPoints, setDataPoints] = useState(() => [getInitialPrice()]);
+  const prevSessionKeyRef = useRef(sessionKey);
+
+  // Reset state when sessionKey changes (when switching sessions)
+  useEffect(() => {
+    const currentFirstPrice = getData[0]?.price || 0;
+    if (prevSessionKeyRef.current !== sessionKey) {
+      // Reset all state immediately
+      console.log(`Resetting ${name} to price: ${currentFirstPrice}, sessionKey: ${sessionKey}`);
+      setCurrentIndex(0);
+      setLatestPrice(currentFirstPrice);
+      setDataPoints([currentFirstPrice]);
+      prevSessionKeyRef.current = sessionKey;
+    }
+  }, [sessionKey, getData, name]);
 
   useEffect(() => {
-    const updateRandomPrice = () => {
-      const targetPrice = getData[currentIndex + 1]?.price;
-      if (targetPrice !== undefined) {
-        const remainingUpdates = 12 - (Math.floor(currentIndex / 5) % 12);
-        const difference = (targetPrice - latestPrice) / remainingUpdates;
-        const randomFluctuation = difference * (Math.random() * 0.4 - 0.2); // Random fluctuation between -20% and +20% of the required difference
+    // Don't start intervals if we don't have valid data
+    if (!getData || getData.length === 0) return;
 
-        setLatestPrice((prevPrice) => prevPrice + difference + randomFluctuation);
-      }
+    const updateRandomPrice = () => {
+      setLatestPrice((prevPrice) => {
+        const currentIdx = currentIndex;
+        const targetPrice = getData[currentIdx + 1]?.price;
+        if (targetPrice !== undefined) {
+          const remainingUpdates = 12 - (Math.floor(currentIdx / 5) % 12);
+          const difference = (targetPrice - prevPrice) / remainingUpdates;
+          const randomFluctuation = difference * (Math.random() * 0.4 - 0.2); // Random fluctuation between -20% and +20% of the required difference
+          return prevPrice + difference + randomFluctuation;
+        }
+        return prevPrice;
+      });
     };
 
     const intervalId = setInterval(() => {
@@ -34,8 +77,13 @@ const StockChart = ({ getData, name, range }) => {
     }, 5000);
 
     const timeoutId = setTimeout(() => {
-      setCurrentIndex((prevIndex) => prevIndex + 1);
-      setLatestPrice(getData[currentIndex + 1]?.price); // Snap to exact target price at each minute
+      setCurrentIndex((prevIndex) => {
+        const nextIndex = prevIndex + 1;
+        if (nextIndex < getData.length) {
+          setLatestPrice(getData[nextIndex]?.price); // Snap to exact target price at each minute
+        }
+        return nextIndex;
+      });
     }, 60000);
 
     return () => {
@@ -46,8 +94,15 @@ const StockChart = ({ getData, name, range }) => {
 
   // Update data points with each latestPrice change
   useEffect(() => {
-    setDataPoints((prevData) => [...prevData, latestPrice]);
-  }, [latestPrice]);
+    // Only append if we're not at the initial state (to avoid duplicate first point)
+    setDataPoints((prevData) => {
+      // If this is the first price and we already have it, don't add again
+      if (prevData.length === 1 && prevData[0] === latestPrice && currentIndex === 0) {
+        return prevData;
+      }
+      return [...prevData, latestPrice];
+    });
+  }, [latestPrice, currentIndex]);
 
   const chartData = {
    labels: dataPoints.map((_, i) => (i * 5)-5 <0 ? null : (i * 5)-5), // Time labels based on the number of data points
@@ -55,8 +110,8 @@ const StockChart = ({ getData, name, range }) => {
       {
         label: "Stock Price (₹)",
         data: dataPoints,
-        borderColor: "#00ffcc",
-        backgroundColor: "rgba(0, 255, 204, 0.1)",
+        borderColor: lineColor,
+        backgroundColor: backgroundColor,
         pointRadius: 0,
         borderWidth: 2,
         tension: 0.1, // Smooth curve

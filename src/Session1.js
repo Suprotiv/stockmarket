@@ -1,7 +1,9 @@
 import React, { useState, useEffect, useMemo } from "react";
-import Charts from "./Charts";
 import Popup from "./Popup";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import DashboardHeader from "./components/DashboardHeader";
+import MarketSummary from "./components/MarketSummary";
+import Charts from "./Charts";
 
 
 const Session1 = () => {
@@ -14,186 +16,103 @@ const Session1 = () => {
 
   // Define the messages for each time slot
   const timeSlotMessages = [
-    { time: 0, message: "" },
-    { time: 1, message: "HAL announced the succesful testing of its new 5th generation fighter jet. The Indian Air Force has ordered 108 of these jets." },
-    { time: 2, message: "Tata Power has announced the permanent closure of its Mundra powerplant. " },
-    { time: 3, message: "Hindenburg is back! Their accusations against the Adani Group are bigger than ever. " },
-    { time: 4, message: "InterGlobe Aviation is expanding its long-haul routes from India to Europe and North America. They will be a major competitor to the gulf carriers." },
+    { time: 0, message: "Session 1 is starting now. Please wait for the data to load." },
+    { time: 1, message: "Zomato remains in focus as investors assess recent management commentary on cost structures alongside steady order trends." },
+    { time: 2, message: "Maruti Suzuki indicates stable production conditions, though margin sensitivity to input costs continues to be monitored." },
+    { time: 3, message: "Policy-related discussions around port-linked logistics infrastructure draw investor attention to the infrastructure space." },
+    { time: 4, message: "Food delivery stocks witness heightened scrutiny as market participants reassess near-term profitability assumptions." },
   ];
 
-  // Memoize the datasets to prevent reference changes on each render
+  // SESSION 1 - OPENING & DISCOVERY PHASE
   const datasets = useMemo(() => [
     {
-      name: "ONGC",
+      name: "Zomato",
       data: [
-        { time: 0, price: 300.0 },
-        { time: 1, price: 299.0 }, // New arbitrary time slot
-        { time: 2, price: 298.5 },
-        { time: 3, price: 299.2 }, // New arbitrary time slot
-        { time: 4, price: 300.89 },
-        { time: 5, price: 300.0 }, // New arbitrary time slot
-        { time: 6, price: 299.68 },
-        { time: 7, price: 301.0 }, // New arbitrary time slot
-        { time: 8, price: 303.28 },
-        { time: 9, price: 305.0 }, // New arbitrary time slot
-        { time: 10, price: 306.01 },
+        { time: 0, price: 200.0 },
+        { time: 1, price: 198.0 },
+        { time: 2, price: 194.0 },
+        { time: 3, price: 196.0 },
+        { time: 4, price: 194.0 },
+        { time: 5, price: 193.0 },
+        { time: 6, price: 192.0 },
+        { time: 7, price: 192.0 },
+        { time: 8, price: 182.0 },
+        { time: 9, price: 181.0 },
+        { time: 10, price: 180.0 },
       ],
-      range:0.1,
+      range: 0.15,
     },
     {
       name: "ITC",
       data: [
-        { time: 0, price: 500.0 },
-        { time: 1, price: 500.8 }, // New arbitrary time slot
-        { time: 2, price: 496 },
-        { time: 3, price: 502.5 }, // New arbitrary time slot
-        { time: 4, price: 501.95 },
-        { time: 5, price: 503.0 }, // New arbitrary time slot
-        { time: 6, price: 504.46 },
-        { time: 7, price: 501.0 }, // New arbitrary time slot
-        { time: 8, price: 500.43 },
-        { time: 9, price: 498.0 }, // New arbitrary time slot
-        { time: 10, price: 500.93 },
+        { time: 0, price: 450.0 },
+        { time: 1, price: 448.0 },
+        { time: 2, price: 450.0 },
+        { time: 3, price: 449.5 },
+        { time: 4, price: 450.0 },
+        { time: 5, price: 448.5 },
+        { time: 6, price: 446.0 },
+        { time: 7, price: 445.2 },
+        { time: 8, price: 446.0 },
+        { time: 9, price: 450.5 },
+        { time: 10, price: 455.0 },
       ],
-      range:0.4,
+      range: 0.4,
+    },
+    {
+      name: "Adani Ports",
+      data: [
+        { time: 0, price: 800.0 },
+        { time: 1, price: 801.5 },
+        { time: 2, price: 800.0 },
+        { time: 3, price: 802.0 },
+        { time: 4, price: 800.0 },
+        { time: 5, price: 812.0 },
+        { time: 6, price: 824.0 },
+        { time: 7, price: 823.2 },
+        { time: 8, price: 824.0 },
+        { time: 9, price: 820.0 },
+        { time: 10, price: 816.0 },
+      ],
+      range: 0.25,
     },
     {
       name: "Maruti Suzuki",
       data: [
-        { time: 0, price: 12500.0 },
-        { time: 1, price: 12530.5 }, // New arbitrary time slot
-        { time: 2, price: 12612.5 },
-        { time: 3, price: 12490.0 }, // New arbitrary time slot
-        { time: 4, price: 12360.3 },
-        { time: 5, price: 12280.0 }, // New arbitrary time slot
-        { time: 6, price: 12197.1 },
-        { time: 7, price: 12350.0 }, // New arbitrary time slot
-        { time: 8, price: 12416.6 },
-        { time: 9, price: 12550.0 }, // New arbitrary time slot
-        { time: 10, price: 12602.9 },
+        { time: 0, price: 10000.0 },
+        { time: 1, price: 10015.0 },
+        { time: 2, price: 10000.0 },
+        { time: 3, price: 10020.0 },
+        { time: 4, price: 10100.0 },
+        { time: 5, price: 10080.0 },
+        { time: 6, price: 9999.0 },
+        { time: 7, price: 9985.0 },
+        { time: 8, price: 9999.0 },
+        { time: 9, price: 9890.0 },
+        { time: 10, price: 9799.0 },
       ],
-      range:0.15,
+      range: 0.15,
     },
     {
-      name: "Adani Enterprises",
+      name: "Bharti Airtel",
       data: [
-        { time: 0, price: 3100.0 },
-        { time: 1, price: 3110.0 }, // New arbitrary time slot
-        { time: 2, price: 3103.10 },
-        { time: 3, price: 3095.0 }, // New arbitrary time slot
-        { time: 4, price: 3115.51 },
-        { time: 5, price: 3080.0 }, // New arbitrary time slot
-        { time: 6, price: 3068.78 },
-        { time: 7, price: 2940.0 }, // New arbitrary time slot
-        { time: 8, price: 2823.28 },
-        { time: 9, price: 2800.0 }, // New arbitrary time slot
-        { time: 10, price: 2766.81 },
+        { time: 0, price: 1000.0 },
+        { time: 1, price: 998.5 },
+        { time: 2, price: 1000.0 },
+        { time: 3, price: 999.0 },
+        { time: 4, price: 1000.0 },
+        { time: 5, price: 995.0 },
+        { time: 6, price: 990.0 },
+        { time: 7, price: 988.5 },
+        { time: 8, price: 990.0 },
+        { time: 9, price: 985.0 },
+        { time: 10, price: 980.0 },
       ],
-      range:0.25,
-    },
-    {
-      name: "Hindustan Aeronautics",
-      data: [
-        { time: 0, price: 4500.0 },
-        { time: 1, price: 4475.0 }, // New arbitrary time slot
-        { time: 2, price: 4432.50 },
-        { time: 3, price: 4800.0 }, // New arbitrary time slot
-        { time: 4, price: 5053.05 },
-        { time: 5, price: 5130.0 }, // New arbitrary time slot
-        { time: 6, price: 5204.64 },
-        { time: 7, price: 5160.0 }, // New arbitrary time slot
-        { time: 8, price: 5074.53 },
-        { time: 9, price: 5100.0 }, // New arbitrary time slot
-        { time: 10, price: 5140.49 },
-      ],
-      range:0.3,
-    },
-    {
-      name: "Jio Financial Services",
-      data: [
-        { time: 0, price: 350.0 },
-        { time: 1, price: 352.0 }, // New arbitrary time slot
-        { time: 2, price: 353.50 },
-        { time: 3, price: 351.0 }, // New arbitrary time slot
-        { time: 4, price: 349.97 },
-        { time: 5, price: 355.0 }, // New arbitrary time slot
-        { time: 6, price: 355.28 },
-        { time: 7, price: 352.0 }, // New arbitrary time slot
-        { time: 8, price: 356.00 },
-        { time: 9, price: 349.5 }, // New arbitrary time slot
-        { time: 10, price: 348.88 },
-      ],
-      range:0.15,
-    },
-    {
-      name: "Tata Power",
-      data: [
-        { time: 0, price: 450.0 },
-        { time: 1, price: 451.5 }, // New arbitrary time slot
-        { time: 2, price: 452.25 },
-        { time: 3, price: 456.0 }, // New arbitrary time slot
-        { time: 4, price: 463.56 },
-        { time: 5, price: 440.0 }, // New arbitrary time slot
-        { time: 6, price: 431.11 },
-        { time: 7, price: 425.0 }, // New arbitrary time slot
-        { time: 8, price: 422.49 },
-        { time: 9, price: 430.0 }, // New arbitrary time slot
-        { time: 10, price: 431.78 },
-      ],
-      range:0.15,
-    },
-    {
-      name: "InterGlobe Aviation",
-      data: [
-        { time: 0, price: 5000.0 },
-        { time: 1, price: 4970.0 }, // New arbitrary time slot
-        { time: 2, price: 4960.0 },
-        { time: 3, price: 4950.0 }, // New arbitrary time slot
-        { time: 4, price: 4935.20 },
-        { time: 5, price: 5020.0 }, // New arbitrary time slot
-        { time: 6, price: 4971.23 },
-        { time: 7, price: 5090.0 }, // New arbitrary time slot
-        { time: 8, price: 5070.65 },
-        { time: 9, price: 5100.0 }, // New arbitrary time slot
-        { time: 10, price: 5390.10 },
-      ],
-      range:0.1,
-    },
-    {
-      name: "Zomato",
-      data: [
-        { time: 0, price: 300.0 },
-        { time: 1, price: 302.0 }, // New arbitrary time slot
-        { time: 2, price: 300.60 },
-        { time: 3, price: 304.0 }, // New arbitrary time slot
-        { time: 4, price: 305.11 },
-        { time: 5, price: 307.0 }, // New arbitrary time slot
-        { time: 6, price: 303.28 },
-        { time: 7, price: 303.5 }, // New arbitrary time slot
-        { time: 8, price: 306.16 },
-        { time: 9, price: 302.0 }, // New arbitrary time slot
-        { time: 10, price: 301.87 },
-      ],
-      range:0.15,
-    },
-    {
-      name: "Asian Paints",
-      data: [
-        { time: 0, price: 3000.0 },
-        { time: 1, price: 3030.0 }, // New arbitrary time slot
-        { time: 2, price: 3045.0 },
-        { time: 3, price: 3035.0 }, // New arbitrary time slot
-        { time: 4, price: 3048.05 },
-        { time: 5, price: 3060.0 }, // New arbitrary time slot
-        { time: 6, price: 3020.61 },
-        { time: 7, price: 3100.0 }, // New arbitrary time slot
-        { time: 8, price: 3081.02 },
-        { time: 9, price: 3115.0 }, // New arbitrary time slot
-        { time: 10, price: 3121.08 },
-      ],
-      range:0.1,
+      range: 0.15,
     },
   ],[]);
+  
+  const [sessionKey] = useState(Date.now());
 
   useEffect(()=>{
     
@@ -223,8 +142,8 @@ const Session1 = () => {
   }, [popupCount]);
 
   const changeSession =()=>{
-    const audio = new Audio('/sound.mov');
-    audio.play();
+    const audio = new Audio('/sound.mp3');
+    audio.play().catch(err => console.log('Audio play failed:', err));
 
     navigate('/session2')
   }
@@ -234,27 +153,62 @@ const Session1 = () => {
     timeSlotMessages[popupCount % timeSlotMessages.length]?.message || "No message";
 
   return (
-    <div>      
-      {/* Render the Popup with the current message */}
-    
-      <Popup visible={popupVisible} message={currentMessage} />
-      <div className="flex flex-wrap">
-        {datasets.map(({ name, data , range }, index) => (
-          <div key={index} className="w-[25%] py-[2vh] px-[1.2vh]">
-            <Charts getData={data} name={name} range={range} />
-          </div>
-        ))}
-        <div className="flex justify-center items-center mx-auto">
-        {
-          button ?
-        
-         <button  onClick={changeSession} className="btn btn-outline btn-info z-50 animate-fadeIn">Next Session</button>
+    <div className="min-h-screen bg-[#0f172a]">
+      <div 
+        className="fixed inset-0 pointer-events-none"
+        style={{
+          background: `linear-gradient(to bottom right, hsl(var(--primary) / 0.05), transparent, hsl(var(--chart-violet) / 0.05))`
+        }}
+      />
       
-         : null
-        }
-         </div>
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <DashboardHeader />
+        
+       
+        
+        {/* Section Header */}
+        <div className="flex items-center justify-between mb-6 opacity-0 animate-fade-in" style={{ animationDelay: "400ms" }}>
+          <div>
+            <h2 className="text-lg font-semibold text-white">Watchlist</h2>
+            <p className="text-sm text-gray-400">Track your favorite stocks</p>
+          </div>
+         
+        </div>
+        
+        {/* Stock Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+          {datasets.map(({ name, data, range }, index) => (
+            <div key={name} className="opacity-0 animate-fade-in" style={{ animationDelay: `${500 + index * 100}ms` }}>
+              <Charts 
+                getData={data} 
+                name={name} 
+                range={range}
+                sessionKey={sessionKey}
+              />
+            </div>
+          ))}
+        </div>
+        
+        {/* Next Session Button */}
+        {button && (
+          <div className="flex justify-center items-center mt-8 opacity-0 animate-fade-in" style={{ animationDelay: "1000ms" }}>
+            <button onClick={changeSession} className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg font-medium transition-colors z-50">
+              Next Session
+            </button>
+          </div>
+        )}
+        
+        {/* Footer */}
+        <footer className="mt-12 pt-6 border-t border-[#334155] opacity-0 animate-fade-in" style={{ animationDelay: "1100ms" }}>
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-gray-400">
+            <p>Data refreshes every 5 seconds • Prices are indicative</p>
+            <p className="font-mono">Last updated: {new Date().toLocaleTimeString("en-IN")}</p>
+          </div>
+        </footer>
       </div>
-     
+      
+      {/* Render the Popup with the current message */}
+      <Popup visible={popupVisible} message={currentMessage} />
     </div>
   );
 };
