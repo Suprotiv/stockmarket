@@ -18,7 +18,7 @@ const Session2 = () => {
     { time: 0, message: "Session 2 is starting now. Please wait for the data to load." },
     { time: 1, message: "Domestic equities trade cautiously as participants factor in mixed global market signals." },
     { time: 2, message: "Zomato remains under watch as investors evaluate recent strategic initiatives in adjacent business segments." },
-    { time: 3, message: "FMCG stocks attract selective interest as investors reassess cost trends and demand visibility." },
+    { time: 3, message: "FMCG stocks see rising volatility as investors reassess defensive positioning amid broader market uncertainty." },
     { time: 4, message: "Infrastructure stocks trade mixed as institutional activity is observed across select names." },
   ];
 

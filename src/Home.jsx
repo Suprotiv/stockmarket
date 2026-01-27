@@ -45,7 +45,7 @@ function Home() {
         {/* Main heading */}
         <div className="text-center space-y-2">
           <h1 className="text-4xl md:text-5xl font-bold text-foreground tracking-tight">
-            Stock Dashboard
+            Idalia Stock Exchange
           </h1>
           <p className="text-muted-foreground text-lg">
             Predict real time stock market trends

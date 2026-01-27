@@ -16,9 +16,9 @@ const Session3 = () => {
   const timeSlotMessages = [
     { time: 0, message: "Session 3 is starting now. Please wait for the data to load." },
     { time: 1, message: "Market participants note incremental changes in Zomato's operating metrics, though views on long-term profitability remain divided." },
-    { time: 2, message: "Telecom stocks draw attention as investors revisit sector pricing dynamics and long-term revenue visibility." },
+    { time: 2, message: "ITC faces heightened regulatory uncertainty, reviving concerns around earnings visibility" },
     { time: 3, message: "Auto stocks see selective interest following the release of recent industry sales data." },
-    { time: 4, message: "ITC witnesses steady institutional interest as investors evaluate defensive positioning within portfolios." },
+    { time: 4, message: "Bharti Airtel draws strong investor interest as pricing-related developments significantly improve long-term revenue visibility." },
   ];
 
   // Memoize the datasets to prevent reference changes on each render
